@@ -17,14 +17,13 @@ class Zoo {
     Animal[] animals;
     String name;
     String city;
-    int nbrCages;
+    final int nbrCages = 25; // Instruction 14 : Rendre nbrCages une constante
     int animalCount; // Compteur d'animaux actuellement dans le zoo
 
     // Constructeur paramétré pour la classe Zoo
-    public Zoo(String name, String city, int nbrCages) {
+    public Zoo(String name, String city) { // Ne pas passer nbrCages comme paramètre
         this.name = name;
         this.city = city;
-        this.nbrCages = nbrCages;
         this.animals = new Animal[nbrCages];
         this.animalCount = 0;
     }
@@ -83,12 +82,29 @@ class Zoo {
         }
         return false; // Animal non trouvé ou suppression impossible
     }
+
+    // Instruction 15 : Méthode statique pour comparer deux zoos et renvoyer le zoo avec le plus d'animaux
+    public static Zoo comparerZoo(Zoo z1, Zoo z2) {
+        if (z1.animalCount > z2.animalCount) {
+            return z1;
+        } else if (z2.animalCount > z1.animalCount) {
+            return z2;
+        } else {
+            // Si les deux zoos ont le même nombre d'animaux, vous pouvez choisir l'un d'entre eux
+            return z1; // Par exemple, renvoyer z1 en cas d'égalité
+        }
+    }
+
+    // Instruction 16 : Méthode statique pour vérifier si le zoo est plein
+    public static boolean isZooFull(Zoo zoo) {
+        return zoo.animalCount >= zoo.nbrCages;
+    }
 }
 
 public class Main {
     public static void main(String[] args) {
         // Création d'un zoo
-        Zoo myZoo = new Zoo("Mon Zoo", "Ma Ville", 25);
+        Zoo myZoo = new Zoo("Mon Zoo", "Ma Ville");
 
         // Création d'animaux avec le constructeur paramétré
         Animal lion = new Animal("Félin", "Lion", 5, true);
@@ -121,5 +137,17 @@ public class Main {
         } else {
             System.out.println("L'animal Babar n'a pas été trouvé dans le zoo.");
         }
+
+        // Utiliser la méthode statique comparerZoo
+        Zoo zooA = new Zoo("Zoo A", "Ville A");
+        Zoo zooB = new Zoo("Zoo B", "Ville B");
+        zooA.addAnimal(new Animal("Félin", "Tigre", 4, true));
+        zooB.addAnimal(new Animal("Oiseau", "Aigle", 3, false));
+
+        Zoo zooAvecLePlusDAanimaux = Zoo.comparerZoo(zooA, zooB);
+        System.out.println("Le zoo avec le plus d'animaux est : " + zooAvecLePlusDAanimaux.name);
+
+        // Utiliser la méthode statique isZooFull
+        System.out.println("Le zoo est-il plein ? " + Zoo.isZooFull(myZoo));
     }
 }
